@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI-Driven Cyclone Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #000; /* Viền đen */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 90%;
+      height: 90%;
+      background-image: url('Background.jpg'); /* 👉 Dùng ảnh thật của bạn */
+      background-size: 1000px auto;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: relative;
+    }
+
+.title-box {
+  position: absolute;
+  top: 30px;
+  left: 140px;
+  font-family: 'UTM Bebas', sans-serif;
+}
+
+.title-line {
+  font-size: 70px;
+  font-weight: normal;
+  color: #231E0C; /* màu của dòng chính */
+}
+
+.title-line .highlight {
+  color: #C00000; /* màu riêng cho AI-DRIVEN */
+}
+
+
+.vertical-btn1 {
+  position: absolute;
+  top: 155px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 18px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+
+.vertical-btn2 {
+  position: absolute;
+  top: 267px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 21px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.vertical-btn3 {
+  position: absolute;
+  top: 380px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 24px 8px;
+ background-color: rgba(127, 127, 127, 0.75);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.vertical-btn4 {
+  position: absolute;
+  top: 494px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 30px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.center-red-box {
+  position: absolute;
+  top: 154px;
+  left: 247px;
+  width: 912px;   /* bạn có thể điều chỉnh */
+  height: 453px;
+ background-color: rgba(127, 127, 127, 0.75);
+border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+
+}
+
+#homeBtn {
+  position: absolute;
+  top: 78px;     /* chỉnh theo ý bạn */
+  right: 210px;
+  width: 70px;   /* hoặc kích thước ảnh thực tế */
+  height: auto;
+  cursor: pointer;
+}
+
+.section-text {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+ font-weight: bold;
+  color: #C00000;
+  position: absolute;
+}
+
+
+
+.coord-label {
+  top: 20px;
+  left: 20px;
+}
+
+
+
+.location-label {
+  top: 185px;
+  left: 20px;
+}
+
+.updated-label {
+  top: 330px;
+  left: 20px;
+}
+
+.weather-label {
+  top: 20px;
+  left: 325px;
+}
+
+.coord-row {
+  display: flex;
+  align-items: center;         /* căn giữa theo chiều dọc */
+  margin: 13px 0px;
+}
+
+.coord-label1 {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  color: #322B1A;
+  font-weight: normal;
+  width: 60px;           /* 👈 đặt cố định để Lat. và Long. thẳng */
+  text-align: left;     /* 👈 đẩy chữ sát phải trong khung label */
+  margin-right: 15px;    /* khoảng cách tới ô input */
+}
+
+.coord-output {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  color: #322B1A;
+  background-color: #D9D9D9;
+  border: none;
+  border-radius: 20px;
+  text-align: center;
+  padding: 3px 3px;
+  height: 36px;
+  width: 160px;           /* 👈 điều chỉnh chiều rộng tại đây */
+  pointer-events: none;
+}
+
+.location-text {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  color: #322B1A;
+  margin-left: 20px;  /* nếu bạn muốn đẩy nội dung sang phải */
+  margin-top: 230px;
+}
+
+.location-text1 {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  color: #322B1A;
+  margin-left: 20px;  /* nếu bạn muốn đẩy nội dung sang phải */
+  margin-top: 10px;
+}
+
+.location-text2 {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  color: #322B1A;
+  margin-left: 20px;  /* nếu bạn muốn đẩy nội dung sang phải */
+  margin-top: 65px;
+}
+
+.vertical-divider {
+  position: absolute;
+  top: 20px;              /* điều chỉnh tùy bố cục */
+  bottom: 20px;
+  left: 300px;            /* 👈 vị trí chính giữa bạn cần chia */
+  width: 1.75px;
+  background-color: #FFFFFF; /* hoặc #C00000 nếu muốn nổi bật hơn */
+  opacity: 0.8;
+}
+.scroll-container {
+  position: absolute;      /* Tọa độ tuyệt đối */
+  top: 60px;              /* Khoảng cách từ trên xuống */
+  left: 315px;             /* Khoảng cách từ phải qua */
+  width: 560px;            /* Chiều rộng hộp */
+  max-height: 360px;       /* Chiều cao tối đa */
+  overflow-y: auto;        /* Cho phép cuộn dọc */
+  background-color: #7F7F7F;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 9999;           /* Đảm bảo hiển thị trên cùng */
+}
+
+.data-card {
+  background-color: #D9D9D9;
+  padding: 20px;                 /* Tăng khoảng cách bên trong */
+  margin-bottom: 15px;           /* Khoảng cách giữa các thẻ */
+  border-radius: 10px;           /* Bo góc */
+  width: 505px;                  /* ✔️ Chiều rộng cố định */
+  height: 50px;                  /* ✔️ Chiều cao tự động theo nội dung */
+  font-size: 20px;    
+  font-family: 'Barlow', sans-serif;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-weight: normal;
+}
+.label {
+  font-weight: normal;
+  color: #333;
+  font-size: 20px;
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -35px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: -10px;             /* Có thể chỉnh qua trái/phải */
+}
+.lat {
+  color: #2c3e50;
+  font-weight: bold;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -35px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: -10px;             /* Có thể chỉnh qua trái/phải */
+}
+.label1 {
+  font-weight: normal;
+  color: #333;
+  font-size: 20px;
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -52px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: -10px;             /* Có thể chỉnh qua trái/phải */
+}
+.windspeed {
+  color: #C00000;
+  font-weight: bold;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -52px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: -10px;             /* Có thể chỉnh qua trái/phải */
+}
+.label2 {
+  font-weight: normal;
+  color: #333;
+  font-size: 20px;
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -68px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: -10px;             /* Có thể chỉnh qua trái/phải */
+}
+.date1{
+  color: #2c3e50;
+  font-weight: bold;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -68px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: -10px;             /* Có thể chỉnh qua trái/phải */
+}
+
+.label3 {
+  font-weight: normal;
+  color: #333;
+  font-size: 20px;
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -140px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 200px;             /* Có thể chỉnh qua trái/phải */
+}
+.long{
+  color: #2c3e50;
+  font-weight: bold;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -140px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 200px;             /* Có thể chỉnh qua trái/phải */
+}
+.label4 {
+  font-weight: normal;
+  color: #333;
+  font-size: 20px;
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -183px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 350px;             /* Có thể chỉnh qua trái/phải */
+}
+.winddir{
+  color: #2c3e50;
+  font-weight: bold;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -183px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 350px;             /* Có thể chỉnh qua trái/phải */
+}
+.label5 {
+  font-weight: normal;
+  color: #333;
+  font-size: 20px;
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -199px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 200px;             /* Có thể chỉnh qua trái/phải */
+}
+.dir{
+  color: #2c3e50;
+  font-weight: bold;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -199px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 200px;             /* Có thể chỉnh qua trái/phải */
+}
+
+.date{
+  color: #2c3e50;
+  font-weight: normal;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -298px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 345px;             /* Có thể chỉnh qua trái/phải */
+}
+  </style>
+
+
+</head>
+
+
+<body>
+  <div class="container">
+<div class="title-box">
+  <div class="title-line">
+    <span class="highlight">AI-DRIVEN</span> CYCLONE PREDICTION
+  </div>
+</div>
+ </div>
+<img src="home.png" alt="Home" id="homeBtn">
+<button id="btn-weather" class="vertical-btn1">Weather</button>
+<button id="btn-cyclone" class="vertical-btn2">Cyclone</button>
+<button id="btn-history" class="vertical-btn3">History</button>
+<button id="btn-model" class="vertical-btn4">Model</button>
+
+<div class="center-red-box">
+  <div class="section-text coord-label">Coordinates
+
+  <div class="coord-row">
+    <label class="coord-label1">Lat.</label>
+    <input type="text" id="latValue" class="coord-output" value="" readonly>
+  </div>
+  <div class="coord-row">
+    <label class="coord-label1">Long.</label>
+    <input type="text" id="longValue" class="coord-output" value="" readonly>
+  </div>
+</div>
+
+  <div class="section-text location-label">Location Info.</div>
+
+<div class="location-text" id="locationCity"></div>
+<div class="location-text1" id="locationCountry"></div>
+  <div class="section-text updated-label">Last Updated</div>
+<div class="location-text2" id="lastUpdatedText"></div>
+    <div class="section-text weather-label">Cyclone Landfalls</div>
+
+
+<div class="vertical-divider"></div>
+
+<div class="scroll-container">
+  <div class="data-card">
+    <p><span class="label">SID.</span><span class="lat">PABUK</span></p>
+    <p><span class="label1">Distance.</span><span class="windspeed">266km</span></p>
+    <p><span class="label2">Category.</span><span class="date1">7</span></p>
+    <p><span class="label3">Lat.</span><span class="long">8.1</span></p>
+    <p><span class="label4">Long.</span><span class="winddir">108.8</span></p>
+    <p><span class="label5">Dir.</span><span class="dir">W</span></p>
+    <p><span class="label6"></span><span class="date">25/12/2024 21:00</span></p>
+   </div>
+
+  <div class="data-card">
+    <p><span class="label">SID.</span><span class="lat">YINXING</span></p>
+    <p><span class="label1">Distance.</span><span class="windspeed">349km</span></p>
+    <p><span class="label2">Category.</span><span class="date1">12</span></p>
+    <p><span class="label3">Lat.</span><span class="long">13.9</span></p>
+    <p><span class="label4">Long.</span><span class="winddir">106.7</span></p>
+    <p><span class="label5">Dir.</span><span class="dir">W</span></p>
+    <p><span class="label6"></span><span class="date">13/11/2024 6:00</span></p>
+   </div>
+
+  <div class="data-card">
+    <p><span class="label">SID.</span><span class="lat">TRAMI</span></p>
+    <p><span class="label1">Distance.</span><span class="windspeed">513km</span></p>
+    <p><span class="label2">Category.</span><span class="date1">5</span></p>
+    <p><span class="label3">Lat.</span><span class="long">15.3</span></p>
+    <p><span class="label4">Long.</span><span class="winddir">107.5</span></p>
+    <p><span class="label5">Dir.</span><span class="dir">E</span></p>
+    <p><span class="label6"></span><span class="date">27/10/2024 15:00</span></p>
+   </div>
+
+  <div class="data-card">
+    <p><span class="label">SID.</span><span class="lat">SOULIK</span></p>
+    <p><span class="label1">Distance.</span><span class="windspeed">646km</span></p>
+    <p><span class="label2">Category.</span><span class="date1">8</span></p>
+    <p><span class="label3">Lat.</span><span class="long">16.5</span></p>
+    <p><span class="label4">Long.</span><span class="winddir">105.7</span></p>
+    <p><span class="label5">Dir.</span><span class="dir">W</span></p>
+    <p><span class="label6"></span><span class="date">19/09/2024 21:00</span></p>
+   </div>
+
+  <div class="data-card">
+    <p><span class="label">SID.</span><span class="lat">PRAPIROON</span></p>
+    <p><span class="label1">Distance.</span><span class="windspeed">769km</span></p>
+    <p><span class="label2">Category.</span><span class="date1">4</span></p>
+    <p><span class="label3">Lat.</span><span class="long">16</span></p>
+    <p><span class="label4">Long.</span><span class="winddir">111.3</span></p>
+    <p><span class="label5">Dir.</span><span class="dir">NW</span></p>
+    <p><span class="label6"></span><span class="date">21/07/2024 0:00</span></p>
+   </div>
+
+  <div class="data-card">
+    <p><span class="label">SID.</span><span class="lat">MAN-YI</span></p>
+    <p><span class="label1">Distance.</span><span class="windspeed">806km</span></p>
+    <p><span class="label2">Category.</span><span class="date1">8</span></p>
+    <p><span class="label3">Lat.</span><span class="long">16.8</span></p>
+    <p><span class="label4">Long.</span><span class="winddir">110.8</span></p>
+    <p><span class="label5">Dir.</span><span class="dir">SW</span></p>
+    <p><span class="label6"></span><span class="date">20/11/2024 0:00</span></p>
+   </div>
+
+  <div class="data-card">
+    <p><span class="label">SID.</span><span class="lat">MALIKSI</span></p>
+    <p><span class="label1">Distance.</span><span class="windspeed">983km</span></p>
+    <p><span class="label2">Category.</span><span class="date1">2</span></p>
+    <p><span class="label3">Lat.</span><span class="long">18</span></p>
+    <p><span class="label4">Long.</span><span class="winddir">111.9</span></p>
+    <p><span class="label5">Dir.</span><span class="dir">N</span></p>
+    <p><span class="label6"></span><span class="date">30/05/2024 0:00</span></p>
+   </div>
+
+  <div class="data-card">
+    <p><span class="label">SID.</span><span class="lat">YAGI</span></p>
+    <p><span class="label1">Distance.</span><span class="windspeed">1081km</span></p>
+    <p><span class="label2">Category.</span><span class="date1">8</span></p>
+    <p><span class="label3">Lat.</span><span class="long">20.3</span></p>
+    <p><span class="label4">Long.</span><span class="winddir">108.6</span></p>
+    <p><span class="label5">Dir.</span><span class="dir">W</span></p>
+    <p><span class="label6"></span><span class="date">06/09/2024 21:00</span></p>
+   </div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">TORAJI</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">1297km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">5</span></p>
+  <p><span class="label3">Lat.</span><span class="long">20.4</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">113.5</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">SE</span></p>
+  <p><span class="label6"></span><span class="date">15/11/2024 9:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">EWINIAR</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">1640km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">3</span></p>
+  <p><span class="label3">Lat.</span><span class="long">14</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">121.4</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">NNW</span></p>
+  <p><span class="label6"></span><span class="date">26/05/2024 0:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">KRATHON</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">1762km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">3</span></p>
+  <p><span class="label3">Lat.</span><span class="long">20.7</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">119.5</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">NNW</span></p>
+  <p><span class="label6"></span><span class="date">01/10/2024 3:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">USAGI</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">1788km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">10</span></p>
+  <p><span class="label3">Lat.</span><span class="long">19.6</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">120.6</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">NW</span></p>
+  <p><span class="label6"></span><span class="date">14/11/2024 18:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">DANA</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">1983km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">7</span></p>
+  <p><span class="label3">Lat.</span><span class="long">16.6</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">89.3</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">NNW</span></p>
+  <p><span class="label6"></span><span class="date">23/10/2024 6:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">KONG-REY</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">2054km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">14</span></p>
+  <p><span class="label3">Lat.</span><span class="long">23.6</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">120.6</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">NW</span></p>
+  <p><span class="label6"></span><span class="date">31/10/2024 9:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">REMAL</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">2058km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">3</span></p>
+  <p><span class="label3">Lat.</span><span class="long">18.8</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">89.4</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">WSW</span></p>
+  <p><span class="label6"></span><span class="date">25/05/2024 12:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">GAEMI</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">2083km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">5</span></p>
+  <p><span class="label3">Lat.</span><span class="long">25.4</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">119</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">WNW</span></p>
+  <p><span class="label6"></span><span class="date">25/07/2024 15:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">JONGDARI</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">2532km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">3</span></p>
+  <p><span class="label3">Lat.</span><span class="long">24.2</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">126</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">NNW</span></p>
+  <p><span class="label6"></span><span class="date">18/08/2024 9:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">NEVILLE</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">2576km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">20</span></p>
+  <p><span class="label3">Lat.</span><span class="long">-12.2</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">103.6</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">E</span></p>
+  <p><span class="label6"></span><span class="date">11/03/2024 15:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">BEBINCA</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">2588km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">6</span></p>
+  <p><span class="label3">Lat.</span><span class="long">32.8</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">114.8</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">SSE</span></p>
+  <p><span class="label6"></span><span class="date">18/09/2024 12:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">ANGGREK</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">2647km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">1</span></p>
+  <p><span class="label3">Lat.</span><span class="long">-9.5</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">94.1</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">E</span></p>
+  <p><span class="label6"></span><span class="date">16/01/2024 18:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">FENGAL</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">2713km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">3</span></p>
+  <p><span class="label3">Lat.</span><span class="long">12.4</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">81.8</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">NW</span></p>
+  <p><span class="label6"></span><span class="date">29/11/2024 18:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">PULASAN</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">2715km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">11</span></p>
+  <p><span class="label3">Lat.</span><span class="long">30.6</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">122</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">NW</span></p>
+  <p><span class="label6"></span><span class="date">19/09/2024 12:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">OLGA</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">2805km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">6</span></p>
+  <p><span class="label3">Lat.</span><span class="long">-11</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">119.5</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">SSE</span></p>
+  <p><span class="label6"></span><span class="date">04/04/2024 12:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">TALIAH</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">2832km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">8</span></p>
+  <p><span class="label3">Lat.</span><span class="long">-14.7</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">106.2</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">W</span></p>
+  <p><span class="label6"></span><span class="date">05/02/2025 15:00</span></p>
+</div>
+
+<div class="data-card">
+  <p><span class="label">SID.</span><span class="lat">VINCE</span></p>
+  <p><span class="label1">Distance.</span><span class="windspeed">2990km</span></p>
+  <p><span class="label2">Category.</span><span class="date1">11</span></p>
+  <p><span class="label3">Lat.</span><span class="long">-15.6</span></p>
+  <p><span class="label4">Long.</span><span class="winddir">101.3</span></p>
+  <p><span class="label5">Dir.</span><span class="dir">WSW</span></p>
+  <p><span class="label6"></span><span class="date">01/02/2025 18:00</span></p>
+</div>
+
+
+</div>
+
+    </div>
+
+<script>
+  function navigateTo(page) {
+    window.location.href = page + '.html';
+  }
+
+  window.onload = function () {
+    const savedLocation = localStorage.getItem('selectedLocation');
+
+const locationCity = document.getElementById('locationCity');
+if (savedLocation && locationCity) {
+  locationCity.textContent = savedLocation;
+    } else if (locationOutput) {
+      locationOutput.textContent = "No location found";
+    }
+
+    // 📌 2. Gắn các sự kiện nút điều hướng
+    document.getElementById('btn-weather').onclick = function () {
+      navigateTo('weather');
+    };
+    document.getElementById('btn-cyclone').onclick = function () {
+      navigateTo('cyclone');
+    };
+    document.getElementById('btn-history').onclick = function () {
+      navigateTo('history');
+    };
+    document.getElementById('btn-model').onclick = function () {
+      navigateTo('model');
+    };
+    document.getElementById('homeBtn').onclick = function () {
+      window.location.href = 'welcome.html';
+    };
+
+    // 📌 3. Hàm gọi API và cập nhật dữ liệu thời tiết
+    const apiKey = "b17906862b824a38a42101316253003";
+
+    function fetchWeatherData(location) {
+      const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(location)}&aqi=no`;
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          const latitude = data.location.lat;
+          const longitude = data.location.lon;
+         
+          const country = data.location.country;
+          const lastUpdated = data.current.last_updated;
+
+
+const latInput = document.getElementById("latValue");
+const longInput = document.getElementById("longValue");
+
+if (latInput) latInput.value = parseFloat(latitude).toFixed(3);
+if (longInput) longInput.value = parseFloat(longitude).toFixed(3);
+
+
+  const lastUpdatedElement = document.getElementById("lastUpdatedText");
+  if (lastUpdatedElement) lastUpdatedElement.textContent = lastUpdated;
+
+const countryElement = document.getElementById("locationCountry");
+if (countryElement) {
+  countryElement.textContent = country;
+}
+
+          const iconElement = document.getElementById("weatherIcon");
+          if (iconElement) iconElement.src = conditionIcon;
+        })
+        .catch(error => {
+          console.error("Error fetching weather data:", error);
+        });
+    }
+
+    // 📌 4. Gọi ngay và mỗi 10 phút
+    if (savedLocation) {
+      fetchWeatherData(savedLocation);
+      setInterval(() => fetchWeatherData(savedLocation), 600000);
+    }
+  };
+</script>
+
+</body>
+</html>

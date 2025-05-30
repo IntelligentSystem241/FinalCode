@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI-Driven Cyclone Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Barlow', sans-serif;
+    }
+
+    .container {
+      width: 90%;
+      height: 90%;
+      background-image: url('Background.jpg');
+      background-size: 1000px auto;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: relative;
+    }
+
+    .title-box {
+      position: absolute;
+      top: 30px;
+      left: 140px;
+      font-family: 'UTM Bebas', sans-serif;
+    }
+
+    .title-box .top-line {
+      font-size: 70px;
+      color: #C00000;
+    }
+
+    .title-box .bottom-line {
+      font-size: 70px;
+      color: #231E0C;
+    }
+
+    .content-box {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 360px;
+      background-color: rgba(127, 127, 127, 0.7);
+      border-radius: 25px;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+
+    .member-login {
+      font-family: 'Barlow', sans-serif;
+      color: #322B1A;
+      font-size: 43px;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 2px;
+    }
+
+    .input-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .input-field {
+      width: 620px;
+      height: 60px;
+      margin-top: 18px;
+      border-radius: 35px;
+      padding: 0 70px;
+      background-color: #F0ECE2;
+      font-family: 'Barlow', sans-serif;
+      font-size: 35px;
+      border: none;
+      box-sizing: border-box;
+    }
+
+    .login-button {
+      margin: 18px 0 0 5.5%;
+      padding: 5px 40px;
+      background-color: #748045;
+      color: white;
+      font-weight: bold;
+      font-family: 'Barlow', sans-serif;
+      font-size: 43px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    .forgot-text {
+      text-align: right;
+      margin: -55px 5.5% 10px 10%;
+      font-family: 'Barlow', sans-serif;
+      font-size: 35px;
+      color: #605E5A;
+    }
+
+    .signup-text {
+      text-align: center;
+      margin-top: 20px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 35px;
+      color: #605E5A;
+      cursor: pointer;
+    }
+
+    .bold {
+      font-weight: bold;
+      color: #605E5A;
+    }
+
+    .icon-inside-box, .icon-inside-box1, .toggle-eye {
+      position: absolute;
+      object-fit: contain;
+    }
+
+    .icon-inside-box {
+      top: 85px;
+      left: 55px;
+      width: 45px;
+      height: 45px;
+    }
+
+    .icon-inside-box1 {
+      top: 160px;
+      left: 55px;
+      width: 48px;
+      height: 48px;
+    }
+
+    .toggle-eye {
+      top: 161px;
+      left: 590px;
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+    }
+
+    /* Áp dụng font Barlow cho popup */
+    .swal2-popup, .swal2-title, .swal2-html-container, .swal2-input {
+      font-family: 'Barlow', sans-serif !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="title-box">
+      <div class="top-line">AI-DRIVEN</div>
+      <div class="bottom-line">CYCLONE PREDICTION</div>
+    </div>
+
+    <div class="content-box">
+      <img src="user.png" class="icon-inside-box" alt="User Icon">
+      <img src="pass.png" class="icon-inside-box1" alt="Pass Icon">
+      <img src="eye.png" class="toggle-eye" id="toggleEye" alt="Toggle password" onclick="togglePassword()">
+
+      <div class="member-login">Member Login</div>
+
+      <div class="input-wrapper">
+        <input id="username" type="text" class="input-field" placeholder="Email or Phone Number">
+        <input id="password" type="password" class="input-field" placeholder="Password">
+      </div>
+
+      <button class="login-button" onclick="handleLogin()">LOGIN</button>
+
+      <p class="forgot-text">Forgot your <span class="bold">Password?</span></p>
+
+      <p class="signup-text" onclick="handleSignup()">Don’t have an account yet? <span class="bold">Create one</span></p>
+    </div>
+  </div>
+
+  <script>
+    // Thêm tài khoản mặc định nếu chưa có
+    if (!localStorage.getItem("accounts")) {
+      localStorage.setItem("accounts", JSON.stringify([{ username: "123", password: "456" }]));
+    }
+
+    function togglePassword() {
+      const passwordInput = document.getElementById("password");
+      const eyeIcon = document.getElementById("toggleEye");
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        eyeIcon.style.opacity = 0.5;
+      } else {
+        passwordInput.type = "password";
+        eyeIcon.style.opacity = 1;
+      }
+    }
+
+    function handleLogin() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const accounts = JSON.parse(localStorage.getItem("accounts") || "[]");
+
+      const found = accounts.find(acc => acc.username === username && acc.password === password);
+
+      if (found) {
+        window.location.href = 'welcome.html';
+      } else {
+        Swal.fire('Login Failed', 'Invalid username or password', 'error');
+      }
+    }
+
+    function handleSignup() {
+      Swal.fire({
+        title: 'Create Account',
+        html:
+          '<input id="new-username" class="swal2-input" placeholder="New Username">' +
+          '<input id="new-password" type="password" class="swal2-input" placeholder="New Password">',
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'Sign Up',
+        preConfirm: () => {
+          const username = document.getElementById('new-username').value.trim();
+          const password = document.getElementById('new-password').value.trim();
+
+          if (!username || !password) {
+            Swal.showValidationMessage('Please enter both fields');
+            return;
+          }
+
+          let accounts = JSON.parse(localStorage.getItem("accounts") || "[]");
+          const exists = accounts.some(acc => acc.username === username);
+
+          if (exists) {
+            Swal.showValidationMessage('Account already exists');
+            return;
+          }
+
+          accounts.push({ username, password });
+          localStorage.setItem("accounts", JSON.stringify(accounts));
+          Swal.fire('Success', 'Account created successfully!', 'success');
+        }
+      });
+    }
+
+    // Cho phép nhấn ENTER để login
+    window.addEventListener('DOMContentLoaded', () => {
+      ['username', 'password'].forEach(id => {
+        document.getElementById(id).addEventListener('keydown', event => {
+          if (event.key === 'Enter') {
+            handleLogin();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

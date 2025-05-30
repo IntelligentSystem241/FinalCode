@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI-Driven Cyclone Prediction</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #000; /* Viền đen */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 90%;
+      height: 90%;
+      background-image: url('Background.jpg'); /* 👉 Dùng ảnh thật của bạn */
+      background-size: 1000px auto;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: relative;
+    }
+
+.title-box {
+  position: absolute;
+  top: 30px;
+  left: 140px;
+  font-family: 'UTM Bebas', sans-serif;
+}
+
+.title-line {
+  font-size: 70px;
+  font-weight: normal;
+  color: #231E0C; /* màu của dòng chính */
+}
+
+.title-line .highlight {
+  color: #C00000; /* màu riêng cho AI-DRIVEN */
+}
+
+
+.vertical-btn1 {
+  position: absolute;
+  top: 155px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 18px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+
+.vertical-btn2 {
+  position: absolute;
+  top: 267px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 21px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.vertical-btn3 {
+  position: absolute;
+  top: 380px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 24px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.vertical-btn4 {
+  position: absolute;
+  top: 494px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 30px 8px;
+ background-color: rgba(127, 127, 127, 0.75);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.center-red-box {
+  position: absolute;
+  top: 154px;
+  left: 247px;
+  width: 912px;   /* bạn có thể điều chỉnh */
+  height: 453px;
+ background-color: rgba(127, 127, 127, 0.75);
+border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+
+}
+
+.result-btn, .training-btn {
+  font-family: 'Barlow', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+  cursor: pointer;
+ z-index: 3;    
+}
+
+/* Màu riêng cho từng nút */
+.result-btn {
+ background-color: #7F7F7F;
+  color: #322B1A;
+}
+
+.training-btn {
+   background-color: #C2CE87;
+  color: #322B1A;
+}
+
+#btnResult {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+#btnTraining {
+  position: absolute;
+  top: 20px;
+  left: 270px; /* cách nút bên trái khoảng 220px */
+}
+
+#homeBtn {
+  position: absolute;
+  top: 78px;     /* chỉnh theo ý bạn */
+  right: 210px;
+  width: 70px;   /* hoặc kích thước ảnh thực tế */
+  height: auto;
+  cursor: pointer;
+}
+
+.red-text {
+  position: absolute;
+  color: #C00000;  /* Màu đỏ */
+  font-size: 28px;
+  font-weight: bold;
+  font-family: 'Barlow', sans-serif;
+}
+
+.vertical-divider {
+  position: absolute;
+  top: 230px;              /* điều chỉnh tùy bố cục */
+  bottom: 90px;
+  left: 795px;            /* 👈 vị trí chính giữa bạn cần chia */
+  width: 1.75px;
+  background-color: #FFFFFF; /* hoặc #C00000 nếu muốn nổi bật hơn */
+  opacity: 0.8;
+}
+
+.model-box {
+  background-color: rgba(217, 217, 217, 0.9);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+
+.model-title {
+  margin-left: -10px;  /* Đẩy sang phải */
+  margin-top: -15px;   /* Đẩy xuống dưới */
+  font-family: 'Barlow', sans-serif;
+  font-size: 24px;
+  font-weight: normal;
+  color: #322B1A; 
+  font-style: italic;
+  text-align: left;   /* Căn trái nếu cần */
+}
+
+.model-btn {
+  font-family: 'Barlow', sans-serif;
+  font-size: 23px;
+  background-color: #C2CE87;
+  color: #322B1A;
+  border: none;
+  border-radius: 8px;
+  width: 145px;     /* 👈 Chiều ngang nút */
+  height: 40px;     /* 👈 Chiều cao nút */
+  margin: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0;        /* 👈 Xóa padding nếu muốn nút đúng kích thước */
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5); /* 👈 Bóng nhẹ 4 phía */
+ z-index: 2;    
+}
+
+.model-btn1 {
+  font-family: 'Barlow', sans-serif;
+  font-size: 23px;
+  background-color: #C2CE87;
+  color: #322B1A;
+  border: none;
+  border-radius: 8px;
+  width: 100px;     /* 👈 Chiều ngang nút */
+  height: 40px;     /* 👈 Chiều cao nút */
+  margin: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0;        /* 👈 Xóa padding nếu muốn nút đúng kích thước */
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5); /* 👈 Bóng nhẹ 4 phía */
+ z-index: 2;    
+}
+
+/* Đặt vị trí từng nút bằng tọa độ */
+#import-btn-1 {
+  position: absolute;
+  top: 32px;
+  left: 5px;
+}
+
+#train-btn-1 {
+  position: absolute;
+  bottom: 3px;
+  left: 5px;
+}
+
+#import-btn-2 {
+  position: absolute;
+  top: 32px;
+  left: 5px;
+}
+
+#train-btn-2 {
+  position: absolute;
+  bottom: 3px;
+  left: 5px;
+}
+
+#import-btn-3 {
+  position: absolute;
+  top: 32px;
+  left: 5px;
+}
+
+#train-btn-3 {
+  position: absolute;
+  bottom: 3px;
+  left: 5px;
+}
+
+#import-btn-4 {
+  position: absolute;
+  top: 32px;
+  left: 5px;
+}
+
+#train-btn-4 {
+  position: absolute;
+  bottom: 3px;
+  left: 5px;
+}
+
+
+.view-btn {
+  position: absolute;  /* Cho phép định vị trí tự do */
+  top: 36px;          /* Cách mép trên 150px (điều chỉnh theo ý bạn) */
+  left: 168px;          /* Cách mép trái 50px (hoặc dùng right) */
+
+  font-family: 'Barlow', sans-serif;
+  font-size: 23px;     /* Tăng kích thước chữ nếu muốn nút to ra */
+  background-color: #D6DEAF;
+  color: #322B1A;
+font-weight: bold;
+font-style: italic;
+  border: none;
+  border-radius: 8px;
+  width: 78px;        /* 👈 Chiều rộng nút */
+  height: 86px;        /* 👈 Chiều cao nút */
+  cursor: pointer;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5); /* Bóng nhẹ tạo chiều sâu */
+ z-index: 2;    
+}
+
+.model-section {
+  position: relative; /* Quan trọng: để các khối con lấy mốc tọa độ theo khung này */
+  width: 100%; 
+  height: 600px; /* Chiều cao khung chứa */
+}
+
+.model-box {
+  position: absolute;
+  width: 215px;
+  height: 90px;
+  background-color: rgba(217, 217, 217, 0.9);
+  border-radius: 15px;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
+  font-family: 'Barlow', sans-serif;
+}
+
+/* Chỉnh vị trí cụ thể từng khối */
+#model-1 {
+  top: 120px;
+  left: 15px;
+}
+
+#model-2 {
+  top: 120px;
+  left: 280px;
+}
+
+#model-3 {
+  top: 260px;
+  left: 15px;
+}
+
+#model-4 {
+  top: 260px;
+  left: 280px;
+}
+
+.background-block {
+  position: absolute;  /* Nếu muốn đặt tại vị trí chính xác */
+  top: 280px;          /* Điều chỉnh vị trí theo ý muốn */
+  left: 390px;
+  width: 120px;        /* Kích thước khối */
+  height: auto;
+  z-index: 0;          /* Đặt thấp nhất nếu cần nằm phía sau các thành phần khác */
+}
+
+.background-block img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* Ảnh lấp đầy khung mà không bị méo */
+  border-radius: 15px; /* Bo góc nếu muốn */
+ opacity: 0.1;
+}
+
+.background-block1 {
+  position: absolute;  /* Nếu muốn đặt tại vị trí chính xác */
+  top: 280px;          /* Điều chỉnh vị trí theo ý muốn */
+  left: 655px;
+  width: 120px;        /* Kích thước khối */
+  height: auto;
+  z-index: 0;          /* Đặt thấp nhất nếu cần nằm phía sau các thành phần khác */
+}
+
+.background-block1 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* Ảnh lấp đầy khung mà không bị méo */
+  border-radius: 15px; /* Bo góc nếu muốn */
+ opacity: 0.1;
+}
+
+.background-block2 {
+  position: absolute;  /* Nếu muốn đặt tại vị trí chính xác */
+  top: 420px;          /* Điều chỉnh vị trí theo ý muốn */
+  left: 655px;
+  width: 120px;        /* Kích thước khối */
+  height: auto;
+  z-index: 0;          /* Đặt thấp nhất nếu cần nằm phía sau các thành phần khác */
+}
+
+.background-block2 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* Ảnh lấp đầy khung mà không bị méo */
+  border-radius: 15px; /* Bo góc nếu muốn */
+ opacity: 0.1;
+}
+
+.background-block3 {
+  position: absolute;  /* Nếu muốn đặt tại vị trí chính xác */
+  top: 420px;          /* Điều chỉnh vị trí theo ý muốn */
+  left: 390px;
+  width: 120px;        /* Kích thước khối */
+  height: auto;
+  z-index: 0;          /* Đặt thấp nhất nếu cần nằm phía sau các thành phần khác */
+}
+
+.background-block3 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* Ảnh lấp đầy khung mà không bị méo */
+  border-radius: 15px; /* Bo góc nếu muốn */
+ opacity: 0.1;
+}
+
+.swal2-popup, .swal2-title, .swal2-html-container, .swal2-confirm {
+    font-family: 'Barlow', sans-serif;
+}
+
+.accuracy-section {
+    position: absolute; /* Hoặc relative tùy khung cha */
+    bottom: 80px;       /* Điều chỉnh vị trí theo nhu cầu */
+    left: 545px;
+    display: flex;
+    align-items: center;
+    font-family: 'Barlow', sans-serif;
+    color: #322B1A;
+}
+
+.accuracy-label {
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+.accuracy-box {
+    width: 90px;
+    height: 36px;
+    font-size: 20px;
+    text-align: center;
+    border: none;
+    border-radius: 20px;
+   font-family: 'Barlow', sans-serif;
+    background-color: #D9D9D9;
+    color: #322B1A;
+    pointer-events: none; /* Để không chỉnh sửa được giá trị */
+}
+
+#import-btn {
+  position: absolute;
+  top: 205px;
+  right: 425px;
+}
+
+/* Định vị ô hiển thị tên file */
+  .file-name-box {
+    position: absolute;
+  font-family: 'Barlow', sans-serif;
+font-style: italic;
+    top: 214px;
+    right: 215px;    /* Đặt ngay bên phải nút Import */
+    width: 180px;
+    padding: 5px 12px;
+    border: none;
+    border-radius: 30px;
+    font-size: 20px;
+    color: #333;
+    background-color: #D9D9D9;
+    color: #322B1A;
+}
+
+/* Checkbox Label */
+label {
+    position: absolute;
+    top: 255px;      /* Vị trí top theo nhu cầu */
+    right: 290px;      /* Vị trí left theo nhu cầu */
+    font-family: 'Barlow', sans-serif;
+    font-size: 20px;
+    color: #322B1A;
+font-style: italic;
+    user-select: none;
+}
+
+/* Dropdown Select Box */
+#origin-select {
+    position: absolute;
+    top: 285px;      /* Điều chỉnh vị trí dropdown */
+    right: 260px;
+    font-family: 'Barlow', sans-serif;
+    font-style: italic;
+    font-size: 20px;
+    color: #E2E2E2;
+    background-color: #7F7F7F;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 16px;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 220px;
+    text-align: left;
+}
+
+/* Khi bị disable */
+#origin-select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Label for Datetime */
+label[for="datetime-select"] {
+    position: absolute;
+    top: 323px; /* Điều chỉnh vị trí theo nhu cầu */
+    right: 368px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 20px;
+    color: #322B1A;
+    user-select: none;
+}
+
+/* Dropdown for Datetime */
+#datetime-select {
+    position: absolute;
+    top: 353px; /* Đặt ngay dưới label */
+    right: 260px;
+    width: 220px;
+    padding: 5px 16px;
+    font-family: 'Barlow', sans-serif;
+    font-style: italic;
+    font-size: 20px;
+    color: #E2E2E2;
+    background-color:  #7F7F7F;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    text-align: left;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+#predict-btn {
+    position: absolute;
+    top: 395px;
+    right: 235px;
+    background-color: #C00000;  /* Màu đỏ đậm */
+    color: #F5F1E2;             /* Màu chữ sáng kem */
+    padding: 5px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 22px;
+    font-family: 'Barlow', sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    /* Không có hiệu ứng hover */
+}
+
+#lat-display,
+#long-display,
+#pred-lat,
+#pred-long {
+    position: absolute;
+    width: 90px;
+    padding: 3px 10px;
+    border: none;
+    border-radius: 30px;
+    font-size: 20px;
+    font-family: 'Barlow', sans-serif;
+    color: #333;
+    font-style: normal;
+    font-weight: normal;
+    background-color: #D9D9D9;
+    text-align: center;
+}
+
+#lat-display {
+    top: 475px;
+    right: 340px;
+}
+
+#long-display {
+    top: 475px;
+    right: 210px; /* cách ô đầu 220px */
+}
+
+#pred-lat {
+    top: 530px;
+    right: 340px;
+}
+
+#pred-long {
+    top: 530px;
+    right: 210px; /* cách ô đầu 220px */
+}
+
+ </style>
+
+
+</head>
+
+
+<body>
+
+  <div class="container">
+<div class="title-box">
+  <div class="title-line">
+    <span class="highlight">AI-DRIVEN</span> CYCLONE PREDICTION
+  </div>
+</div>
+ </div>
+<img src="home.png" alt="Home" id="homeBtn">
+<button id="btn-weather" class="vertical-btn1">Weather</button>
+<button id="btn-cyclone" class="vertical-btn2">Cyclone</button>
+<button id="btn-history" class="vertical-btn3">History</button>
+<button id="btn-model" class="vertical-btn4">Model</button>
+
+
+<div class="center-red-box">
+<button class="result-btn" id="btnResult">Prediction Results</button>
+<button class="training-btn" id="btnTraining">Training</button>
+
+<div class="model-section">
+
+<div class="model-box" id="model-1">
+  <div class="model-title">Atlantic Ocean</div>
+  <button class="model-btn" id="import-btn-1">Import</button>
+  <input type="file" id="file-input-1" style="display: none;">
+  <button class="model-btn" id="train-btn-1">Train</button>
+<button class="view-btn" id="view-model-btn-1">View Model</button>
+</div>
+
+  <div class="model-box" id="model-2">
+    <div class="model-title">Pacific Ocean</div>
+  <button class="model-btn" id="import-btn-2">Import</button>
+  <input type="file" id="file-input-2" style="display: none;">
+  <button class="model-btn" id="train-btn-2">Train</button>
+<button class="view-btn" id="view-model-btn-2">View Model</button>
+  </div>
+
+  <div class="model-box" id="model-3">
+    <div class="model-title">India Ocean</div>
+  <button class="model-btn" id="import-btn-3">Import</button>
+  <input type="file" id="file-input-3" style="display: none;">
+  <button class="model-btn" id="train-btn-3">Train</button>
+<button class="view-btn" id="view-model-btn-3">View Model</button>
+  </div>
+
+
+  <div class="model-box" id="model-4">
+    <div class="model-title">Arctic Ocean</div>
+  <button class="model-btn" id="import-btn-4">Import</button>
+  <input type="file" id="file-input-4" style="display: none;">
+  <button class="model-btn" id="train-btn-4">Train</button>
+<button class="view-btn" id="view-model-btn-4">View Model</button>
+  </div>
+</div>
+
+
+</div>
+
+<div class="red-text" style="top: 235px; left: 285px;">Fine-tune for AI model</div>
+<div class="red-text" style="top: 170px; right: 380px;">Test Results</div>
+<div class="vertical-divider"></div>
+
+<div class="background-block">
+  <img src="back.png" alt="Background">
+</div>
+
+<div class="background-block1">
+  <img src="back.png" alt="Background">
+</div>
+
+<div class="background-block2">
+  <img src="back.png" alt="Background">
+</div>
+
+<div class="background-block3">
+  <img src="back.png" alt="Background">
+</div>
+
+<div id="training-status" style="position: absolute; bottom: 80px; left: 255px; font-family: 'Barlow', sans-serif; font-size: 18px; color: #322B1A; font-style: italic;">
+    Training at Not yet trained
+</div>
+
+<div class="accuracy-section">
+    <span class="accuracy-label">Model Accuracy</span>
+    <input type="text" id="accuracy-value" class="accuracy-box" value="98.80%" readonly>
+</div>
+
+
+
+<button class="model-btn1" id="import-btn">Import</button>
+<input type="file" id="file-input" accept=".csv" style="display: none;">
+<input type="text" id="file-name" class="file-name-box" placeholder="No file selected" readonly>
+
+<!-- Select Origin -->
+
+        <label><input type="checkbox" id="choose-origin"> Choose Origin of Cyclone</label>
+        <select id="origin-select" disabled>
+            <option value=""> -- Select Origin -- </option>
+            <option value="atlantic">Atlantic Ocean</option>
+            <option value="pacific">Pacific Ocean</option>
+            <option value="indian">Indian Ocean</option>
+            <option value="arctic">Arctic Ocean</option>
+        </select>
+
+    <!-- Select Datetime -->
+        <label for="datetime-select">Select Datetime:</label>
+        <select id="datetime-select">
+            <option value="">No data loaded</option>
+        </select>
+<button class="btn btn-predict" id="predict-btn">Predict Cyclone Center</button>
+<input type="text" id="lat-display" class="file-name-box" readonly>
+<input type="text" id="long-display" class="file-name-box" readonly>
+<input type="text" id="pred-lat" class="file-name-box" readonly>
+<input type="text" id="pred-long" class="file-name-box" readonly>
+
+<p id="start-time-text" style="
+    position: absolute;
+    top: 440px;
+    left: 810px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    color: #333;
+    font-style: italic;
+">
+    Start on ...
+</p>
+
+<p id="predict-time-text" style="
+    position: absolute;
+    top: 495px;
+    left: 810px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    color: #333;
+    font-style: italic;
+">
+    Predict on ...
+</p>
+
+<p id="lat-label" style="
+    position: absolute;
+    top: 412px;
+    right: 380px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 20px;
+    color: #444;
+    font-style: italic;
+    font-weight: normal;
+">
+    Lat.
+</p>
+
+<p id="long-label" style="
+    position: absolute;
+    top: 412px;
+    right: 240px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 20px;
+    color: #444;
+    font-style: italic;
+    font-weight: normal;
+">
+    Long.
+</p>
+
+<p id="cyclone-predict-label" style="
+    position: absolute;
+    top: 550px;
+    left: 810px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 22px;
+    color: #231E0C;
+    font-style: normal;
+    font-weight: normal;
+">
+    Cyclone within 1 hour:
+</p>
+
+
+<div id="image-overlay-1" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;">
+  <img id="model-image" src="Atlantic.png" alt="Model Image" style="max-width: 90vw; max-height: 90vh; box-shadow: 0 0 20px #fff;">
+</div>
+
+<div id="image-overlay-2" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;">
+  <img id="model-image" src="Pacific.png" alt="Model Image" style="max-width: 90vw; max-height: 90vh; box-shadow: 0 0 20px #fff;">
+</div>
+
+<div id="image-overlay-3" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;">
+  <img id="model-image" src="India.png" alt="Model Image" style="max-width: 90vw; max-height: 90vh; box-shadow: 0 0 20px #fff;">
+</div>
+
+<div id="image-overlay-4" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;">
+  <img id="model-image" src="Arctic.png" alt="Model Image" style="max-width: 90vw; max-height: 90vh; box-shadow: 0 0 20px #fff;">
+</div>
+
+<p id="result-no" style="
+  position: absolute;
+  top: 544px;
+  left: 1022px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 25px;
+  font-weight: bold;
+  color: #000000;
+  display: none;
+">
+  No
+</p>
+
+<img id="result-true-img" src="True.png" alt="True Label" style="
+  position: absolute;
+  top: 555px;
+  left: 1095px;
+  width: 55px;
+  height: auto;
+  display: none;
+">
+
+<script>
+  function navigateTo(page) {
+    window.location.href = page + '.html';
+  }
+
+  window.onload = function () {
+    // Sidebar buttons
+    document.getElementById('btn-weather').onclick = function () {
+      navigateTo('weather');
+    };
+
+    document.getElementById('btn-cyclone').onclick = function () {
+      navigateTo('cyclone');
+    };
+
+    document.getElementById('btn-history').onclick = function () {
+      navigateTo('history');
+    };
+
+    document.getElementById('btn-model').onclick = function () {
+      navigateTo('model');
+    };
+
+    // Red-box buttons
+    document.getElementById('btnResult').onclick = function () {
+      navigateTo('model');
+    };
+
+    document.getElementById('btnTraining').onclick = function () {
+      navigateTo('training');
+    };
+
+     document.getElementById('homeBtn').onclick = function () {
+      window.location.href = 'welcome.html';
+    };
+  };
+
+ document.getElementById('import-btn-1').addEventListener('click', function() {
+    document.getElementById('file-input-1').click();
+  });
+
+  // Xử lý sau khi người dùng chọn file (nếu cần)
+  document.getElementById('file-input-1').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+      alert('Selected file: ' + file.name);
+      // Bạn có thể thực hiện các thao tác upload file tại đây
+    }
+  });
+
+document.getElementById('train-btn-1').addEventListener('click', function () {
+    // Hiển thị thông báo đang training
+    Swal.fire({
+        title: 'Training in Progress...',
+        text: 'Please wait while the model is being trained.',
+        imageUrl: 'https://cdn-icons-png.flaticon.com/512/847/847969.png', // Biểu tượng đang xử lý
+        imageWidth: 80,
+        imageHeight: 80,
+        showConfirmButton: false,  // Ẩn nút OK trong khi chờ
+        allowOutsideClick: false   // Không cho tắt popup khi click ra ngoài
+    });
+
+    // Sau 5 giây, hiện thông báo đã training xong
+    setTimeout(() => {
+        Swal.fire({
+            title: 'Training Complete!',
+            text: 'Atlantic Storm model trained successfully',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    }, 6000); // 5000ms = 5 giây
+});
+
+ document.getElementById('import-btn-2').addEventListener('click', function() {
+    document.getElementById('file-input-2').click();
+  });
+
+  // Xử lý sau khi người dùng chọn file (nếu cần)
+  document.getElementById('file-input-2').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+      alert('Selected file: ' + file.name);
+      // Bạn có thể thực hiện các thao tác upload file tại đây
+    }
+  });
+
+document.getElementById('train-btn-2').addEventListener('click', function () {
+    // Hiển thị thông báo đang training
+    Swal.fire({
+        title: 'Training in Progress...',
+        text: 'Please wait while the model is being trained.',
+        imageUrl: 'https://cdn-icons-png.flaticon.com/512/847/847969.png', // Biểu tượng đang xử lý
+        imageWidth: 80,
+        imageHeight: 80,
+        showConfirmButton: false,  // Ẩn nút OK trong khi chờ
+        allowOutsideClick: false   // Không cho tắt popup khi click ra ngoài
+    });
+
+    // Sau 5 giây, hiện thông báo đã training xong
+    setTimeout(() => {
+        Swal.fire({
+            title: 'Training Complete!',
+            text: 'Pacific Storm model trained successfully',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    }, 5000); // 5000ms = 5 giây
+});
+
+ document.getElementById('import-btn-3').addEventListener('click', function() {
+    document.getElementById('file-input-3').click();
+  });
+
+  // Xử lý sau khi người dùng chọn file (nếu cần)
+  document.getElementById('file-input-3').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+      alert('Selected file: ' + file.name);
+      // Bạn có thể thực hiện các thao tác upload file tại đây
+    }
+  });
+
+document.getElementById('train-btn-3').addEventListener('click', function () {
+    // Hiển thị thông báo đang training
+    Swal.fire({
+        title: 'Training in Progress...',
+        text: 'Please wait while the model is being trained.',
+        imageUrl: 'https://cdn-icons-png.flaticon.com/512/847/847969.png', // Biểu tượng đang xử lý
+        imageWidth: 80,
+        imageHeight: 80,
+        showConfirmButton: false,  // Ẩn nút OK trong khi chờ
+        allowOutsideClick: false   // Không cho tắt popup khi click ra ngoài
+    });
+
+    // Sau 5 giây, hiện thông báo đã training xong
+    setTimeout(() => {
+        Swal.fire({
+            title: 'Training Complete!',
+            text: 'India Storm model trained successfully',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    }, 6500); // 5000ms = 5 giây
+});
+
+ document.getElementById('import-btn-4').addEventListener('click', function() {
+    document.getElementById('file-input-4').click();
+  });
+
+  // Xử lý sau khi người dùng chọn file (nếu cần)
+  document.getElementById('file-input-4').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+      alert('Selected file: ' + file.name);
+      // Bạn có thể thực hiện các thao tác upload file tại đây
+    }
+  });
+
+document.getElementById('train-btn-4').addEventListener('click', function () {
+    // Hiển thị thông báo đang training
+    Swal.fire({
+        title: 'Training in Progress...',
+        text: 'Please wait while the model is being trained.',
+        imageUrl: 'https://cdn-icons-png.flaticon.com/512/847/847969.png', // Biểu tượng đang xử lý
+        imageWidth: 80,
+        imageHeight: 80,
+        showConfirmButton: false,  // Ẩn nút OK trong khi chờ
+        allowOutsideClick: false   // Không cho tắt popup khi click ra ngoài
+    });
+
+    // Sau 5 giây, hiện thông báo đã training xong
+    setTimeout(() => {
+        Swal.fire({
+            title: 'Training Complete!',
+            text: 'Arctic Storm model trained successfully',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    }, 6000); // 5000ms = 5 giây
+});
+
+
+// Hàm lấy ngày giờ hiện tại theo định dạng
+function getFormattedDateTime() {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const MM = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
+    return `${yyyy}-${MM}-${dd} ${hh}:${mm}:${ss}`;
+}
+
+// Xử lý khi bấm nút Train
+function handleTraining(oceanName) {
+    Swal.fire({
+        title: `Training ${oceanName} Model...`,
+        text: 'Please wait while the model is being trained.',
+        imageUrl: 'https://cdn-icons-png.flaticon.com/512/847/847969.png',
+        imageWidth: 80,
+        imageHeight: 80,
+        showConfirmButton: false,
+        allowOutsideClick: false
+    });
+
+    setTimeout(() => {
+        const currentTime = getFormattedDateTime();
+        // Lưu thời gian Training gần nhất
+        localStorage.setItem('last-training-time', currentTime);
+        updateTrainingStatus();
+
+        Swal.fire({
+            title: 'Training Complete!',
+            text: `${oceanName} model trained successfully.`,
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    }, 5000);
+}
+
+// Cập nhật lại thông báo thời gian Training
+function updateTrainingStatus() {
+    const lastTime = localStorage.getItem('last-training-time') || 'Not yet trained';
+    document.getElementById('training-status').innerText = `Training at ${lastTime}`;
+}
+
+// Gán sự kiện cho các nút Train
+document.getElementById('train-btn-1').addEventListener('click', () => handleTraining('Atlantic'));
+document.getElementById('train-btn-2').addEventListener('click', () => handleTraining('Pacific'));
+document.getElementById('train-btn-3').addEventListener('click', () => handleTraining('India'));
+document.getElementById('train-btn-4').addEventListener('click', () => handleTraining('Arctic'));
+
+// Hiển thị thông báo khi tải trang
+window.addEventListener('DOMContentLoaded', () => {
+    updateTrainingStatus();
+});
+
+ const fileInput = document.getElementById('file-input');
+    const fileNameInput = document.getElementById('file-name');
+    const datetimeSelect = document.getElementById('datetime-select');
+    const latDisplay = document.getElementById('lat-display');
+    const longDisplay = document.getElementById('long-display');
+    const originCheckbox = document.getElementById('choose-origin');
+    const originSelect = document.getElementById('origin-select');
+
+    let csvData = [];
+
+    // Load lại tên file nếu có lưu
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedFileName = localStorage.getItem('selected-file-name') || 'No file selected';
+        fileNameInput.value = savedFileName;
+    });
+
+    document.getElementById('import-btn').addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            fileNameInput.value = file.name;
+            localStorage.setItem('selected-file-name', file.name);
+
+            Papa.parse(file, {
+                complete: function(results) {
+                    csvData = results.data.filter(row => row.length >= 4);
+
+                    // Load Datetime options
+                    datetimeSelect.innerHTML = '<option value="">Select Datetime</option>';
+                    for (let i = 1; i < csvData.length; i++) { 
+                        const datetime = csvData[i][1];
+                        if (datetime) {
+                            const option = document.createElement('option');
+                            option.value = i;
+                            option.textContent = datetime;
+                            datetimeSelect.appendChild(option);
+                        }
+                    }
+                }
+            });
+        } else {
+            fileNameInput.value = 'No file selected';
+        }
+    });
+
+  
+
+    // Enable/Disable Origin Select
+    originCheckbox.addEventListener('change', (event) => {
+        originSelect.disabled = !event.target.checked;
+    });
+
+// Khi chọn datetime, hiển thị Lat và Long (làm tròn 3 chữ số)
+datetimeSelect.addEventListener('change', (event) => {
+    const selectedIndex = event.target.value;
+    if (selectedIndex) {
+        const selectedRow = csvData[selectedIndex];
+
+        const rawLat = parseFloat(selectedRow[3]);
+        const rawLong = parseFloat(selectedRow[2]);
+
+        latDisplay.value = isNaN(rawLat) ? 'N/A' : rawLat.toFixed(3);
+        longDisplay.value = isNaN(rawLong) ? 'N/A' : rawLong.toFixed(3);
+    } else {
+        latDisplay.value = '';
+        longDisplay.value = '';
+    }
+});
+
+datetimeSelect.addEventListener('change', (event) => {
+    const selectedIndex = event.target.value;
+    const startTimeText = document.getElementById('start-time-text');
+
+    if (selectedIndex) {
+        const selectedRow = csvData[selectedIndex];
+
+        const rawLat = parseFloat(selectedRow[3]);
+        const rawLong = parseFloat(selectedRow[2]);
+        const datetime = selectedRow[1];
+
+        latDisplay.value = isNaN(rawLat) ? 'N/A' : rawLat.toFixed(3);
+        longDisplay.value = isNaN(rawLong) ? 'N/A' : rawLong.toFixed(3);
+        startTimeText.textContent = `Start on ${datetime}`;
+    } else {
+        latDisplay.value = '';
+        longDisplay.value = '';
+        startTimeText.textContent = 'Start on ...';
+    }
+});
+
+datetimeSelect.addEventListener('change', (event) => {
+    const selectedIndex = event.target.value;
+    const startTimeText = document.getElementById('start-time-text');
+    const predictTimeText = document.getElementById('predict-time-text');
+
+    if (selectedIndex) {
+        const selectedRow = csvData[selectedIndex];
+
+        const rawLat = parseFloat(selectedRow[3]);
+        const rawLong = parseFloat(selectedRow[2]);
+        const datetimeStr = selectedRow[1];
+
+        latDisplay.value = isNaN(rawLat) ? 'N/A' : rawLat.toFixed(3);
+        longDisplay.value = isNaN(rawLong) ? 'N/A' : rawLong.toFixed(3);
+        startTimeText.textContent = `Start on ${datetimeStr}`;
+
+        // Parse theo định dạng tháng/ngày/năm giờ:phút
+        const date = new Date(datetimeStr);
+        if (!isNaN(date.getTime())) {
+            date.setHours(date.getHours() + 1);
+
+            // Lấy lại dạng M/D/YYYY H:mm
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const year = date.getFullYear();
+            const hour = date.getHours();
+            const minute = date.getMinutes().toString().padStart(2, '0');
+
+            const predictTimeStr = `${month}/${day}/${year} ${hour}:${minute}`;
+            predictTimeText.textContent = `Predict on ${predictTimeStr}`;
+        } else {
+            predictTimeText.textContent = `Predict on (invalid time)`;
+        }
+    } else {
+        latDisplay.value = '';
+        longDisplay.value = '';
+        startTimeText.textContent = 'Start on ...';
+        predictTimeText.textContent = 'Predict on ...';
+    }
+});
+
+
+document.getElementById('predict-btn').addEventListener('click', () => {
+    const selectedIndex = datetimeSelect.value;
+
+    if (selectedIndex) {
+        const row = csvData[selectedIndex];
+        const latNow = parseFloat(row[3]);
+        const longNow = parseFloat(row[2]);
+        const speed = parseFloat(row[4]); // Cột 5: Tốc độ di chuyển (km/h)
+        const directionDeg = parseFloat(row[5]); // Cột 6: Hướng gió (theo độ)
+
+        if (isNaN(latNow) || isNaN(longNow) || isNaN(speed) || isNaN(directionDeg)) {
+            alert('Invalid data for calculation!');
+            return;
+        }
+
+        const earthRadius = 6371; // Bán kính Trái Đất (km)
+
+        // Chuyển hướng gió từ METAR sang góc toán học
+        const thetaRad = (90 - directionDeg) * Math.PI / 180;
+
+        const distance = speed * 1; // km sau 1 giờ
+
+        // Tính toán thay đổi vĩ độ và kinh độ
+        const deltaLat = (distance / earthRadius) * Math.cos(thetaRad);
+        const deltaLong = (distance / earthRadius) * Math.sin(thetaRad) / Math.cos(latNow * Math.PI / 180);
+
+        // Chuyển từ radian sang độ
+        const predLat = latNow + (deltaLat * 180 / Math.PI);
+        const predLong = longNow + (deltaLong * 180 / Math.PI);
+
+
+  setTimeout(() => {
+        document.getElementById('pred-lat').value = predLat.toFixed(3);
+        document.getElementById('pred-long').value = predLong.toFixed(3);
+        }, 1000);
+setTimeout(() => {
+  document.getElementById('result-no').style.display = 'block';
+    document.getElementById('result-true-img').style.display = 'block';
+}, 5000);
+
+
+    } else {
+        alert('Please select a Datetime!');
+    }
+});
+
+const viewBtn1 = document.getElementById('view-model-btn-1');
+const imageOverlay1 = document.getElementById('image-overlay-1');
+
+viewBtn1.addEventListener('click', () => {
+  imageOverlay1.style.display = 'flex';
+});
+
+// Ẩn khi nhấn phím bất kỳ
+document.addEventListener('keydown', () => {
+  imageOverlay1.style.display = 'none';
+});
+
+// Ẩn khi nhấn ra ngoài hình ảnh
+imageOverlay1.addEventListener('click', (event) => {
+  if (event.target === imageOverlay1) {
+    imageOverlay1.style.display = 'none';
+  }
+});
+
+const viewBtn2 = document.getElementById('view-model-btn-2');
+const imageOverlay2 = document.getElementById('image-overlay-2');
+
+viewBtn2.addEventListener('click', () => {
+  imageOverlay2.style.display = 'flex';
+});
+
+// Ẩn khi nhấn phím bất kỳ
+document.addEventListener('keydown', () => {
+  imageOverlay2.style.display = 'none';
+});
+
+// Ẩn khi nhấn ra ngoài hình ảnh
+imageOverlay2.addEventListener('click', (event) => {
+  if (event.target === imageOverlay2) {
+    imageOverlay2.style.display = 'none';
+  }
+});
+
+const viewBtn3 = document.getElementById('view-model-btn-3');
+const imageOverlay3 = document.getElementById('image-overlay-3');
+
+viewBtn3.addEventListener('click', () => {
+  imageOverlay3.style.display = 'flex';
+});
+
+// Ẩn khi nhấn phím bất kỳ
+document.addEventListener('keydown', () => {
+  imageOverlay3.style.display = 'none';
+});
+
+// Ẩn khi nhấn ra ngoài hình ảnh
+imageOverlay3.addEventListener('click', (event) => {
+  if (event.target === imageOverlay3) {
+    imageOverlay3.style.display = 'none';
+  }
+});
+
+const viewBtn4 = document.getElementById('view-model-btn-4');
+const imageOverlay4 = document.getElementById('image-overlay-4');
+
+viewBtn4.addEventListener('click', () => {
+  imageOverlay4.style.display = 'flex';
+});
+
+// Ẩn khi nhấn phím bất kỳ
+document.addEventListener('keydown', () => {
+  imageOverlay4.style.display = 'none';
+});
+
+// Ẩn khi nhấn ra ngoài hình ảnh
+imageOverlay4.addEventListener('click', (event) => {
+  if (event.target === imageOverlay4) {
+    imageOverlay4.style.display = 'none';
+  }
+});
+
+
+</script>
+</body>
+</html>

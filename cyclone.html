@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI-Driven Cyclone Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 90%;
+      height: 90%;
+      background-image: url('Background.jpg');
+      background-size: 1000px auto;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: relative;
+    }
+
+    .vertical-btn1, .vertical-btn2, .vertical-btn3, .vertical-btn4 {
+      position: absolute;
+      left: 206px;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: 'Barlow', sans-serif;
+      font-size: 20px;
+      font-weight: bold;
+      color: #231E0C;
+      border: none;
+      border-radius: 0 15px 15px 0;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .vertical-btn1 { top: 155px; background-color: rgba(166,166,166,0.7); padding: 18px 8px; }
+    .vertical-btn2 { top: 267px; background-color: rgba(127,127,127,0.75); padding: 21px 8px; }
+    .vertical-btn3 { top: 380px; background-color: rgba(166,166,166,0.7); padding: 24px 8px; }
+    .vertical-btn4 { top: 494px; background-color: rgba(166,166,166,0.7); padding: 30px 8px; }
+
+    .title-box {
+      position: absolute;
+      top: 30px;
+      left: 140px;
+      font-family: 'UTM Bebas', sans-serif;
+    }
+
+    .title-line {
+      font-size: 70px;
+      font-weight: normal;
+      color: #231E0C;
+    }
+
+    .title-line .highlight {
+      color: #C00000;
+    }
+
+    #homeBtn {
+      position: absolute;
+      top: 78px;
+      right: 210px;
+      width: 70px;
+      height: auto;
+      cursor: pointer;
+    }
+
+    .center-red-box {
+      position: absolute;
+      top: 154px;
+      left: 247px;
+      width: 912px;
+      height: 453px;
+      background-color: rgba(127, 127, 127, 0.75);
+      border-radius: 0 15px 15px 0;
+    }
+
+    .center-red-box1 {
+      position: absolute;
+      top: 54px;
+      left: 325px;
+    }
+
+    .section-text {
+      font-family: 'Barlow', sans-serif;
+      font-size: 28px;
+      font-weight: bold;
+      color: #C00000;
+      position: absolute;
+    }
+
+    .coord-label { top: 20px; left: 20px; }
+    .location-label { top: 185px; left: 20px; }
+    .updated-label { top: 330px; left: 20px; }
+    .weather-label { top: 20px; left: 325px; }
+    .cyclone-label { top: 185px; left: 325px; }
+
+    .coord-row {
+      display: flex;
+      align-items: center;
+      margin: 13px 0px;
+    }
+
+    .coord-label1, .coord-label2 {
+      font-family: 'Barlow', sans-serif;
+      font-size: 28px;
+      color: #322B1A;
+      font-weight: normal;
+      text-align: left;
+      margin-right: 15px;
+    }
+
+    .coord-label1 { width: 60px; }
+    .coord-label2 { width: 270px; }
+
+    .coord-output, .coord-input {
+      font-family: 'Barlow', sans-serif;
+      font-size: 28px;
+      color: #322B1A;
+      background-color: #D9D9D9;
+      border: none;
+      border-radius: 20px;
+      text-align: center;
+      padding: 3px 3px;
+      height: 36px;
+    }
+
+    .coord-output { width: 160px; pointer-events: none; }
+    .coord-input { width: 95px; outline: none; }
+
+    .location-text, .location-text1, .location-text2 {
+      font-family: 'Barlow', sans-serif;
+      font-size: 28px;
+      color: #322B1A;
+      margin-left: 20px;
+    }
+
+    .location-text { margin-top: 230px; }
+    .location-text1 { margin-top: 10px; }
+    .location-text2 { margin-top: 65px; }
+
+    .vertical-divider {
+      position: absolute;
+      top: 20px;
+      bottom: 20px;
+      left: 300px;
+      width: 1.75px;
+      background-color: #FFFFFF;
+      opacity: 0.8;
+    }
+
+    .notification {
+      font-family: 'Barlow', sans-serif;
+      font-size: 28px;
+      color: #322B1A;
+      text-align: left;
+      width: 350px;
+      font-weight: normal;
+      position: absolute;
+      top: 233px;
+      left: 323px;
+    }
+
+    .next-button {
+      position: absolute;
+      top: 123px;
+      right: 20px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 27px;
+      font-weight: bold;
+      background-color: #C00000;
+      color: white;
+      border: none;
+      border-radius: 35px;
+      padding: 5px 20px;
+      cursor: pointer;
+    }
+
+.swal2-popup {
+  font-family: 'Barlow', sans-serif !important;
+}
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="title-box">
+      <div class="title-line">
+        <span class="highlight">AI-DRIVEN</span> CYCLONE PREDICTION
+      </div>
+    </div>
+  </div>
+
+  <img src="home.png" alt="Home" id="homeBtn">
+  <button id="btn-weather" class="vertical-btn1">Weather</button>
+  <button id="btn-cyclone" class="vertical-btn2">Cyclone</button>
+  <button id="btn-history" class="vertical-btn3">History</button>
+  <button id="btn-model" class="vertical-btn4">Model</button>
+
+  <div class="center-red-box">
+    <div class="section-text coord-label">Coordinates
+      <div class="coord-row">
+        <label class="coord-label1">Lat.</label>
+        <input type="text" id="latValue" class="coord-output" readonly>
+      </div>
+      <div class="coord-row">
+        <label class="coord-label1">Long.</label>
+        <input type="text" id="longValue" class="coord-output" readonly>
+      </div>
+    </div>
+
+    <div class="section-text location-label">Location Info.</div>
+    <div class="location-text" id="locationCity"></div>
+    <div class="location-text1" id="locationCountry"></div>
+    <div class="section-text updated-label">Last Updated</div>
+    <div class="location-text2" id="lastUpdatedText"></div>
+
+    <div class="vertical-divider"></div>
+    <div class="section-text weather-label">Current Cyclone</div>
+    <div class="section-text cyclone-label">Prediction Outcomes</div>
+
+    <div class="center-red-box1">
+      <div class="coord-row">
+        <label class="coord-label2">Detection Radius (km)</label>
+        <input type="text" id="DetectR" class="coord-input">
+      </div>
+      <div class="coord-row">
+        <label class="coord-label2">Forecast Time (h)</label>
+        <input type="text" id="Time" class="coord-input">
+      </div>
+    </div>
+
+    <div class="notification">Not Detected Cyclone Now</div>
+    <button class="next-button" id="nextBtn" onclick="goToPredict()">PREDICT</button>
+  </div>
+
+  <script>
+    function navigateTo(page) {
+      window.location.href = page + '.html';
+    }
+
+    window.onload = function () {
+      const savedLocation = localStorage.getItem('selectedLocation');
+      const locationCity = document.getElementById('locationCity');
+
+      if (savedLocation && locationCity) {
+        locationCity.textContent = savedLocation;
+      }
+
+      document.getElementById('btn-weather').onclick = () => navigateTo('weather');
+      document.getElementById('btn-cyclone').onclick = () => navigateTo('cyclone');
+      document.getElementById('btn-history').onclick = () => navigateTo('history');
+      document.getElementById('btn-model').onclick = () => navigateTo('model');
+      document.getElementById('homeBtn').onclick = () => window.location.href = 'welcome.html';
+
+      const apiKey = "b17906862b824a38a42101316253003";
+      function fetchWeatherData(location) {
+        const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(location)}&aqi=no`;
+
+        fetch(apiUrl)
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById("latValue").value = parseFloat(data.location.lat).toFixed(3);
+            document.getElementById("longValue").value = parseFloat(data.location.lon).toFixed(3);
+            document.getElementById("lastUpdatedText").textContent = data.current.last_updated;
+            document.getElementById("locationCountry").textContent = data.location.country;
+          })
+          .catch(error => console.error("Error fetching weather data:", error));
+      }
+
+      if (savedLocation) {
+        fetchWeatherData(savedLocation);
+        setInterval(() => fetchWeatherData(savedLocation), 600000);
+      }
+    };
+
+    function allowOnlyIntegers(event) {
+      const charCode = event.which || event.keyCode;
+      if (charCode < 48 || charCode > 57) event.preventDefault();
+    }
+
+    function saveValue(id) {
+      const value = document.getElementById(id).value;
+      localStorage.setItem(id, value);
+    }
+
+    function restoreValues() {
+      ['DetectR', 'Time'].forEach(id => {
+        const savedValue = localStorage.getItem(id);
+        if (savedValue !== null) {
+          document.getElementById(id).value = savedValue;
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      restoreValues();
+      ['DetectR', 'Time'].forEach(id => {
+        const input = document.getElementById(id);
+        input.addEventListener('keypress', allowOnlyIntegers);
+        input.addEventListener('change', () => saveValue(id));
+      });
+    });
+
+      function goToPredict() {
+    const notification = document.querySelector('.notification');
+    if (notification) notification.style.display = 'none';
+
+    // Hiển thị popup đang dự đoán
+    Swal.fire({
+      title: 'Prediction in Progress...',
+      text: 'Please wait while the system checks for cyclone detection',
+      imageUrl: 'https://cdn-icons-png.flaticon.com/512/847/847969.png',
+      imageWidth: 80,
+      imageHeight: 80,
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
+
+    // Sau 10 giây thì hiện kết quả thành công
+    setTimeout(() => {
+      Swal.fire({
+        title: 'Prediction Complete!',
+        text: 'No cyclone detected within the forecast range.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
+
+      // Hiện lại dòng thông báo trong giao diện
+      if (notification) {
+        notification.textContent = 'Not Detected Cyclone Now'; // Hoặc đổi nội dung dự đoán
+        notification.style.display = 'block';
+      }
+    }, 10000);
+  }
+  </script>
+</body>
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI-Driven Cyclone Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #000; /* Viền đen */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 90%;
+      height: 90%;
+      background-image: url('Background.jpg'); /* 👉 Dùng ảnh thật của bạn */
+      background-size: 1000px auto;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: relative;
+    }
+
+.title-box {
+  position: absolute;
+  top: 30px;
+  left: 140px;
+  font-family: 'UTM Bebas', sans-serif;
+}
+
+.title-line {
+  font-size: 70px;
+  font-weight: normal;
+  color: #231E0C; /* màu của dòng chính */
+}
+
+.title-line .highlight {
+  color: #C00000; /* màu riêng cho AI-DRIVEN */
+}
+
+
+.vertical-btn1 {
+  position: absolute;
+  top: 155px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 18px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+
+.vertical-btn2 {
+  position: absolute;
+  top: 267px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 21px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.vertical-btn3 {
+  position: absolute;
+  top: 380px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 24px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.vertical-btn4 {
+  position: absolute;
+  top: 494px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 30px 8px;
+ background-color: rgba(127, 127, 127, 0.75);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.center-red-box {
+  position: absolute;
+  top: 154px;
+  left: 247px;
+  width: 912px;   /* bạn có thể điều chỉnh */
+  height: 453px;
+ background-color: rgba(127, 127, 127, 0.75);
+border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+
+}
+
+.result-btn, .training-btn {
+  font-family: 'Barlow', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+
+/* Màu riêng cho từng nút */
+.result-btn {
+  background-color: #C2CE87;
+  color: #322B1A;
+}
+
+.training-btn {
+  background-color: #7F7F7F;
+  color: #322B1A;
+}
+
+#btnResult {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+#btnTraining {
+  position: absolute;
+  top: 20px;
+  left: 270px; /* cách nút bên trái khoảng 220px */
+}
+
+#homeBtn {
+  position: absolute;
+  top: 78px;     /* chỉnh theo ý bạn */
+  right: 210px;
+  width: 70px;   /* hoặc kích thước ảnh thực tế */
+  height: auto;
+  cursor: pointer;
+}
+
+.accuracy-section {
+    position: absolute; /* Hoặc relative tùy khung cha */
+    bottom: 80px;       /* Điều chỉnh vị trí theo nhu cầu */
+    left: 545px;
+    display: flex;
+    align-items: center;
+    font-family: 'Barlow', sans-serif;
+    color: #322B1A;
+}
+
+.accuracy-label {
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+.accuracy-box {
+    width: 90px;
+    height: 36px;
+    font-size: 20px;
+    text-align: center;
+    border: none;
+    border-radius: 20px;
+   font-family: 'Barlow', sans-serif;
+    background-color: #D9D9D9;
+    color: #322B1A;
+    pointer-events: none; /* Để không chỉnh sửa được giá trị */
+}
+
+.scroll-container {
+  position: absolute;      /* Tọa độ tuyệt đối */
+  top: 230px;              /* Khoảng cách từ trên xuống */
+  left: 267px;             /* Khoảng cách từ phải qua */
+  width: 842px;            /* Chiều rộng hộp */
+  max-height: 305px;       /* Chiều cao tối đa */
+  overflow-y: auto;        /* Cho phép cuộn dọc */
+  background-color: #7F7F7F;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 9999;           /* Đảm bảo hiển thị trên cùng */
+}
+
+.data-card {
+  background-color: #D9D9D9;
+  padding: 20px;                 /* Tăng khoảng cách bên trong */
+  margin-bottom: 15px;           /* Khoảng cách giữa các thẻ */
+  border-radius: 20px;           /* Bo góc */
+  width: 785px;                  /* ✔️ Chiều rộng cố định */
+  height: 78px;                  /* ✔️ Chiều cao tự động theo nội dung */
+  font-size: 23px;    
+  font-family: 'Barlow', sans-serif;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-weight: normal;
+}
+.label {
+  font-weight: normal;
+  color: #333;
+  font-size: 23px;
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -35px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 0px;             /* Có thể chỉnh qua trái/phải */
+}
+.lat {
+  color: #2c3e50;
+  font-weight: bold;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -35px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 0px;             /* Có thể chỉnh qua trái/phải */
+}
+.label1 {
+  font-weight: normal;
+  color: #333;
+  font-size: 23px;
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -49px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 0px;             /* Có thể chỉnh qua trái/phải */
+}
+.windspeed {
+  color: #2c3e50;
+  font-weight: bold;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -49px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 0px;             /* Có thể chỉnh qua trái/phải */
+}
+.label2 {
+  font-weight: normal;
+  color: #333;
+  font-size: 23px;
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -65px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 0px;             /* Có thể chỉnh qua trái/phải */
+}
+.date{
+  color: #2c3e50;
+  font-weight: bold;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -65px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 0px;             /* Có thể chỉnh qua trái/phải */
+}
+.label3 {
+  font-weight: normal;
+  color: #333;
+  font-size: 23px;
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -187px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 250px;             /* Có thể chỉnh qua trái/phải */
+}
+.long{
+  color: #2c3e50;
+  font-weight: bold;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -187px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 250px;             /* Có thể chỉnh qua trái/phải */
+}
+.label4 {
+  font-weight: normal;
+  color: #333;
+  font-size: 23px;
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -202px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 250px;             /* Có thể chỉnh qua trái/phải */
+}
+.winddir{
+  color: #2c3e50;
+  font-weight: bold;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -202px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 250px;             /* Có thể chỉnh qua trái/phải */
+}
+.label5 {
+  font-weight: normal;
+  color: #333;
+  font-size: 23px;
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -290px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 470px;             /* Có thể chỉnh qua trái/phải */
+}
+.dis{
+  color: #2c3e50;
+  font-weight: bold;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -290px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 470px;             /* Có thể chỉnh qua trái/phải */
+}
+.label6 {
+  font-weight: normal;
+  color: #333;
+  font-size: 23px;
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -304px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 470px;             /* Có thể chỉnh qua trái/phải */
+}
+.humid{
+  color: #2c3e50;
+  font-weight: bold;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -304px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 470px;             /* Có thể chỉnh qua trái/phải */
+}
+.label7 {
+  font-weight: normal;
+  color: #333;
+  font-size: 23px;
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -320px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 470px;             /* Có thể chỉnh qua trái/phải */
+}
+.cyclone{
+  color: #C00000;
+  font-weight: bold;
+  display: inline-block; /* Đảm bảo căn chỉnh dễ dàng */
+  margin-left: 5px;      /* Cách một chút với chữ "Lat:" */
+  position: relative;    /* Chuẩn bị nếu muốn chỉnh vị trí */
+  top: -320px;              /* Có thể chỉnh lên/xuống: âm là lên, dương là xuống */
+  left: 470px;             /* Có thể chỉnh qua trái/phải */
+}
+  </style>
+
+
+</head>
+
+
+<body>
+  <div class="container">
+<div class="title-box">
+  <div class="title-line">
+    <span class="highlight">AI-DRIVEN</span> CYCLONE PREDICTION
+  </div>
+</div>
+ </div>
+<img src="home.png" alt="Home" id="homeBtn">
+<button id="btn-weather" class="vertical-btn1">Weather</button>
+<button id="btn-cyclone" class="vertical-btn2">Cyclone</button>
+<button id="btn-history" class="vertical-btn3">History</button>
+<button id="btn-model" class="vertical-btn4">Model</button>
+
+<div class="center-red-box">
+<button class="result-btn" id="btnResult">Prediction Results</button>
+<button class="training-btn" id="btnTraining">Training</button>
+</div>
+
+<div id="training-status" style="position: absolute; bottom: 80px; left: 255px; font-family: 'Barlow', sans-serif; font-size: 18px; color: #322B1A; font-style: italic;">
+    Training at Not yet trained
+</div>
+
+<div class="accuracy-section">
+    <span class="accuracy-label">Model Accuracy</span>
+    <input type="text" id="accuracy-value" class="accuracy-box" value="98.80%" readonly>
+</div>
+
+<div class="scroll-container">
+  <div class="data-card">
+    <p><span class="label">Lat.</span><span class="lat">10.750</span></p>
+    <p><span class="label1">Wind Speed.</span><span class="windspeed">7 kph</span></p>
+    <p><span class="label2">Date.</span><span class="date">17/01/2025 14:45</span></p>
+    <p><span class="label3">Long.</span><span class="long">106.667</span></p>
+    <p><span class="label4">Wind Direction.</span><span class="winddir">ESE</span></p>
+    <p><span class="label5">Distance.</span><span class="dis">5807 km - DIKELEDI</span></p>
+    <p><span class="label6">Humidity.</span><span class="humid">24%</span></p>
+    <p><span class="label7">Cyclone within 1 hour.</span><span class="cyclone">NO [T]</span></p>
+  </div>
+
+  <div class="data-card">
+    <p><span class="label">Lat.</span><span class="lat">10.750</span></p>
+    <p><span class="label1">Wind Speed.</span><span class="windspeed">7.1 kph</span></p>
+    <p><span class="label2">Date.</span><span class="date">11/01/2025 23:30</span></p>
+    <p><span class="label3">Long.</span><span class="long">106.667</span></p>
+    <p><span class="label4">Wind Direction.</span><span class="winddir">ESE</span></p>
+    <p><span class="label5">Distance.</span><span class="dis">9968 km - PITA</span></p>
+    <p><span class="label6">Humidity.</span><span class="humid">72%</span></p>
+    <p><span class="label7">Cyclone within 1 hour.</span><span class="cyclone">NO [T]</span></p>
+  </div>
+
+  <div class="data-card">
+    <p><span class="label">Lat.</span><span class="lat">10.750</span></p>
+    <p><span class="label1">Wind Speed.</span><span class="windspeed">7.6 kph</span></p>
+    <p><span class="label2">Date.</span><span class="date">25/12/2024 21:00</span></p>
+    <p><span class="label3">Long.</span><span class="long">106.667</span></p>
+    <p><span class="label4">Wind Direction.</span><span class="winddir">WNW</span></p>
+    <p><span class="label5">Distance.</span><span class="dis">325km - PABUK</span></p>
+    <p><span class="label6">Humidity.</span><span class="humid">81%</span></p>
+    <p><span class="label7">Cyclone within 1 hour.</span><span class="cyclone">NO [F]</span></p>
+  </div>
+
+  <div class="data-card">
+    <p><span class="label">Lat.</span><span class="lat">10.750</span></p>
+    <p><span class="label1">Wind Speed.</span><span class="windspeed">12 kph</span></p>
+    <p><span class="label2">Date.</span><span class="date">26/12/2024 6:00</span></p>
+    <p><span class="label3">Long.</span><span class="long">106.667</span></p>
+    <p><span class="label4">Wind Direction.</span><span class="winddir">W</span></p>
+    <p><span class="label5">Distance.</span><span class="dis">266km - YINXING</span></p>
+    <p><span class="label6">Humidity.</span><span class="humid">75%</span></p>
+    <p><span class="label7">Cyclone within 1 hour.</span><span class="cyclone">NO [T]</span></p>
+  </div>
+
+  <div class="data-card">
+    <p><span class="label">Lat.</span><span class="lat">10.750</span></p>
+    <p><span class="label1">Wind Speed.</span><span class="windspeed">11 kph</span></p>
+    <p><span class="label2">Date.</span><span class="date">01/02/2025 18:00</span></p>
+    <p><span class="label3">Long.</span><span class="long">106.667</span></p>
+    <p><span class="label4">Wind Direction.</span><span class="winddir">WSW</span></p>
+    <p><span class="label5">Distance.</span><span class="dis">2990km - VINCE</span></p>
+    <p><span class="label6">Humidity.</span><span class="humid">78%</span></p>
+    <p><span class="label7">Cyclone within 1 hour.</span><span class="cyclone">NO [T]</span></p>
+  </div>
+
+  <div class="data-card">
+    <p><span class="label">Lat.</span><span class="lat">10.750</span></p>
+    <p><span class="label1">Wind Speed.</span><span class="windspeed">11 kph</span></p>
+    <p><span class="label2">Date.</span><span class="date">05/02/2025 15:00</span></p>
+    <p><span class="label3">Long.</span><span class="long">106.667</span></p>
+    <p><span class="label4">Wind Direction.</span><span class="winddir">W</span></p>
+    <p><span class="label5">Distance.</span><span class="dis">2832km - TALIAH</span></p>
+    <p><span class="label6">Humidity.</span><span class="humid">82%</span></p>
+    <p><span class="label7">Cyclone within 1 hour.</span><span class="cyclone">NO [T]</span></p>
+  </div>
+
+  <div class="data-card">
+    <p><span class="label">Lat.</span><span class="lat">10.750</span></p>
+    <p><span class="label1">Wind Speed.</span><span class="windspeed">10 kph</span></p>
+    <p><span class="label2">Date.</span><span class="date">14/11/2024 18:00</span></p>
+    <p><span class="label3">Long.</span><span class="long">106.667</span></p>
+    <p><span class="label4">Wind Direction.</span><span class="winddir">NW</span></p>
+    <p><span class="label5">Distance.</span><span class="dis">1788km - USAGI</span></p>
+    <p><span class="label6">Humidity.</span><span class="humid">79%</span></p>
+    <p><span class="label7">Cyclone within 1 hour.</span><span class="cyclone">NO [T]</span></p>
+  </div>
+
+  <div class="data-card">
+    <p><span class="label">Lat.</span><span class="lat">10.750</span></p>
+    <p><span class="label1">Wind Speed.</span><span class="windspeed">5 kph</span></p>
+    <p><span class="label2">Date.</span><span class="date">25/07/2024 15:00</span></p>
+    <p><span class="label3">Long.</span><span class="long">106.667</span></p>
+    <p><span class="label4">Wind Direction.</span><span class="winddir">WNW</span></p>
+    <p><span class="label5">Distance.</span><span class="dis">2083km - GEAMI</span></p>
+    <p><span class="label6">Humidity.</span><span class="humid">54%</span></p>
+    <p><span class="label7">Cyclone within 1 hour.</span><span class="cyclone">NO [T]</span></p>
+  </div>
+
+  <div class="data-card">
+    <p><span class="label">Lat.</span><span class="lat">10.750</span></p>
+    <p><span class="label1">Wind Speed.</span><span class="windspeed">20 kph</span></p>
+    <p><span class="label2">Date.</span><span class="date">11/03/2024 15:00</span></p>
+    <p><span class="label3">Long.</span><span class="long">106.667</span></p>
+    <p><span class="label4">Wind Direction.</span><span class="winddir">E</span></p>
+    <p><span class="label5">Distance.</span><span class="dis">2576km - NEVILLE</span></p>
+    <p><span class="label6">Humidity.</span><span class="humid">62%</span></p>
+    <p><span class="label7">Cyclone within 1 hour.</span><span class="cyclone">NO [T]</span></p>
+  </div>
+
+  <div class="data-card">
+    <p><span class="label">Lat.</span><span class="lat">10.750</span></p>
+    <p><span class="label1">Wind Speed.</span><span class="windspeed">6 kph</span></p>
+    <p><span class="label2">Date.</span><span class="date">04/04/2024 12:00</span></p>
+    <p><span class="label3">Long.</span><span class="long">106.667</span></p>
+    <p><span class="label4">Wind Direction.</span><span class="winddir">SSE</span></p>
+    <p><span class="label5">Distance.</span><span class="dis">2805km - OLGA</span></p>
+    <p><span class="label6">Humidity.</span><span class="humid">75%</span></p>
+    <p><span class="label7">Cyclone within 1 hour.</span><span class="cyclone">NO [T]</span></p>
+  </div>
+</div>
+
+    </div>
+
+
+<script>
+  function navigateTo(page) {
+    window.location.href = page + '.html';
+  }
+
+  window.onload = function () {
+    // Sidebar buttons
+    document.getElementById('btn-weather').onclick = function () {
+      navigateTo('weather');
+    };
+
+    document.getElementById('btn-cyclone').onclick = function () {
+      navigateTo('cyclone');
+    };
+
+    document.getElementById('btn-history').onclick = function () {
+      navigateTo('history');
+    };
+
+    document.getElementById('btn-model').onclick = function () {
+      navigateTo('model');
+    };
+
+    // Red-box buttons
+    document.getElementById('btnResult').onclick = function () {
+      navigateTo('model');
+    };
+
+    document.getElementById('btnTraining').onclick = function () {
+      navigateTo('training');
+    };
+
+     document.getElementById('homeBtn').onclick = function () {
+      window.location.href = 'welcome.html';
+    };
+  };
+window.addEventListener('DOMContentLoaded', () => {
+    const lastTime = localStorage.getItem('last-training-time') || 'Not yet trained';
+    document.getElementById('training-status').innerText = `Training at ${lastTime}`;
+});
+</script>
+
+</body>
+</html>

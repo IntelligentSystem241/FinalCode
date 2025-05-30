@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI-Driven Cyclone Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #000; /* Viền đen */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 90%;
+      height: 90%;
+      background-image: url('Background.jpg'); /* 👉 Dùng ảnh thật của bạn */
+      background-size: 1000px auto;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: relative;
+    }
+
+.title-box {
+  position: absolute;
+  top: 30px;
+  left: 140px;
+  font-family: 'UTM Bebas', sans-serif;
+}
+
+.title-line {
+  font-size: 70px;
+  font-weight: normal;
+  color: #231E0C; /* màu của dòng chính */
+}
+
+.title-line .highlight {
+  color: #C00000; /* màu riêng cho AI-DRIVEN */
+}
+
+
+.vertical-btn1 {
+  position: absolute;
+  top: 155px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 18px 8px;
+ background-color: rgba(127, 127, 127, 0.75);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+
+.vertical-btn2 {
+  position: absolute;
+  top: 267px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 21px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.vertical-btn3 {
+  position: absolute;
+  top: 380px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 24px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.vertical-btn4 {
+  position: absolute;
+  top: 494px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 30px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+
+
+.center-red-box {
+  position: absolute;
+  top: 154px;
+  left: 247px;
+  width: 912px;   /* bạn có thể điều chỉnh */
+  height: 453px;
+ background-color: rgba(127, 127, 127, 0.75);
+border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+
+}
+
+#homeBtn {
+  position: absolute;
+  top: 78px;     /* chỉnh theo ý bạn */
+  right: 210px;
+  width: 70px;   /* hoặc kích thước ảnh thực tế */
+  height: auto;
+  cursor: pointer;
+}
+
+.section-text {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+ font-weight: bold;
+  color: #C00000;
+  position: absolute;
+}
+
+
+.coord-label {
+  top: 20px;
+  left: 20px;
+}
+
+.location-label {
+  top: 185px;
+  left: 20px;
+}
+
+.updated-label {
+  top: 330px;
+  left: 20px;
+}
+
+.weather-label {
+  top: 20px;
+  left: 325px;
+}
+
+.coord-row {
+  display: flex;
+  align-items: center;         /* căn giữa theo chiều dọc */
+  margin: 13px 0px;
+}
+
+.coord-label1 {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  color: #322B1A;
+  font-weight: normal;
+  width: 60px;           /* 👈 đặt cố định để Lat. và Long. thẳng */
+  text-align: left;     /* 👈 đẩy chữ sát phải trong khung label */
+  margin-right: 15px;    /* khoảng cách tới ô input */
+}
+
+.coord-output {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  color: #322B1A;
+  background-color: #D9D9D9;
+  border: none;
+  border-radius: 20px;
+  text-align: center;
+  padding: 3px 3px;
+  height: 36px;
+  width: 160px;           /* 👈 điều chỉnh chiều rộng tại đây */
+  pointer-events: none;
+}
+
+.location-text {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  color: #322B1A;
+  margin-left: 20px;  /* nếu bạn muốn đẩy nội dung sang phải */
+  margin-top: 230px;
+}
+
+.location-text1 {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  color: #322B1A;
+  margin-left: 20px;  /* nếu bạn muốn đẩy nội dung sang phải */
+  margin-top: 10px;
+}
+
+.location-text2 {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  color: #322B1A;
+  margin-left: 20px;  /* nếu bạn muốn đẩy nội dung sang phải */
+  margin-top: 65px;
+}
+
+.vertical-divider {
+  position: absolute;
+  top: 20px;              /* điều chỉnh tùy bố cục */
+  bottom: 20px;
+  left: 300px;            /* 👈 vị trí chính giữa bạn cần chia */
+  width: 1.75px;
+  background-color: #FFFFFF; /* hoặc #C00000 nếu muốn nổi bật hơn */
+  opacity: 0.8;
+}
+
+.weather-details {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: 210px;     /* 📍 điều chỉnh theo layout */
+  left: 325px;    /* 📍 vị trí bắt đầu bên phải đường chia */
+  width: 550px;   /* tổng chiều rộng 2 cột */
+}
+
+.left-column, .right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.weather-row .label {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  color: #322B1A;
+}
+
+.weather-row .value {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  color: #322B1A;
+  margin-left: 2px;
+}
+
+.weather-main {
+  position: absolute;
+  top: 5px;      /* 📍 tùy chỉnh */
+  right: 30px;
+  text-align: center;
+}
+
+.weather-icon {
+  width: 280px;
+  position: absolute;
+  top: 40px;
+  right: 100px;
+  z-index: 1; /* phía sau */
+  opacity: 0.9; /* tuỳ chọn: làm mờ icon nếu muốn */
+}
+
+.temperature {
+  font-family: 'UTM Bebas', sans-serif;
+  font-size: 90px;
+  font-weight: normal;
+  color: #322B1A;
+  line-height: 1;
+}
+
+.sup {
+  font-size: 60px;
+  vertical-align: super;
+  margin-right: 2px;
+}
+
+.degree {
+  font-size: 90px;
+  vertical-align: super;
+}
+
+.weather-desc {
+  font-family: 'Barlow', sans-serif;
+  font-size: 28px;
+  color: #322B1A;
+  margin-top: 10px;
+  text-align: right; /* ✅ canh phải */
+}
+
+
+  </style>
+
+
+</head>
+
+
+<body>
+  <div class="container">
+<div class="title-box">
+  <div class="title-line">
+    <span class="highlight">AI-DRIVEN</span> CYCLONE PREDICTION
+  </div>
+</div>
+
+ </div>
+<img src="home.png" alt="Home" id="homeBtn">
+<button id="btn-weather" class="vertical-btn1">Weather</button>
+<button id="btn-cyclone" class="vertical-btn2">Cyclone</button>
+<button id="btn-history" class="vertical-btn3">History</button>
+<button id="btn-model" class="vertical-btn4">Model</button>
+
+
+<div class="center-red-box">
+  <div class="section-text coord-label">Coordinates
+
+  <div class="coord-row">
+    <label class="coord-label1">Lat.</label>
+    <input type="text" id="latValue" class="coord-output" value="" readonly>
+  </div>
+  <div class="coord-row">
+    <label class="coord-label1">Long.</label>
+    <input type="text" id="longValue" class="coord-output" value="" readonly>
+  </div>
+</div>
+
+  <div class="section-text location-label">Location Info.</div>
+
+<div class="location-text" id="locationCity"></div>
+<div class="location-text1" id="locationCountry"></div>
+  <div class="section-text updated-label">Last Updated</div>
+<div class="location-text2" id="lastUpdatedText"></div>
+
+
+<div class="vertical-divider"></div>
+  <div class="section-text weather-label">Current Weather</div>
+
+<div class="weather-details">
+  <div class="left-column">
+    <div class="weather-row">
+  <span class="label">Wind Speed:</span>
+  <span class="value" id="windSpeedValue">-- kph</span>
+</div>
+
+    <div class="weather-row">
+  <span class="label">Wind Direction:</span>
+  <span class="value" id="windDirValue">--</span>
+</div>
+
+
+    <div class="weather-row">
+  <span class="label">Precipitation:</span>
+  <span class="value" id="precipValue">-- mm</span>
+</div>
+
+
+    <div class="weather-row">
+  <span class="label">Pressure:</span>
+  <span class="value" id="pressureValue">-- mb</span>
+</div>
+
+
+  </div>
+  <div class="right-column">
+
+    <div class="weather-row">
+  <span class="label">Cloud Cover:</span>
+  <span class="value" id="cloudCoverValue">-- %</span>
+</div>
+
+<div class="weather-row">
+  <span class="label">Humidity:</span>
+  <span class="value" id="humidityValue">-- %</span>
+</div>
+
+   <div class="weather-row">
+  <span class="label">Visibility:</span>
+  <span class="value" id="visibilityValue">-- km</span>
+</div>
+
+    <div class="weather-row">
+  <span class="label">UV:</span>
+  <span class="value" id="uvValue">--</span>
+</div>
+  </div>
+</div>
+
+<div class="weather-main">
+  <img src="rain.png" alt="Weather Icon" class="weather-icon">
+<div class="temperature" id="temperatureText"> <span class="sup">0</span>C</div>
+<div class="weather-desc" id="weatherDesc"></div>
+</div>
+
+<script>
+  function navigateTo(page) {
+    window.location.href = page + '.html';
+  }
+
+  window.onload = function () {
+    const savedLocation = localStorage.getItem('selectedLocation');
+
+const locationCity = document.getElementById('locationCity');
+if (savedLocation && locationCity) {
+  locationCity.textContent = savedLocation;
+    } else if (locationOutput) {
+      locationOutput.textContent = "No location found";
+    }
+
+    // 📌 2. Gắn các sự kiện nút điều hướng
+    document.getElementById('btn-weather').onclick = function () {
+      navigateTo('weather');
+    };
+    document.getElementById('btn-cyclone').onclick = function () {
+      navigateTo('cyclone');
+    };
+    document.getElementById('btn-history').onclick = function () {
+      navigateTo('history');
+    };
+    document.getElementById('btn-model').onclick = function () {
+      navigateTo('model');
+    };
+    document.getElementById('homeBtn').onclick = function () {
+      window.location.href = 'welcome.html';
+    };
+
+    // 📌 3. Hàm gọi API và cập nhật dữ liệu thời tiết
+    const apiKey = "b17906862b824a38a42101316253003";
+
+    function fetchWeatherData(location) {
+      const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(location)}&aqi=no`;
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          const latitude = data.location.lat;
+          const longitude = data.location.lon;
+          const temperature = data.current.temp_c;
+          const conditionText = data.current.condition.text;
+          const conditionIcon = data.current.condition.icon;
+          const country = data.location.country;
+          const lastUpdated = data.current.last_updated;
+const windSpeed = data.current.wind_kph;
+const windDirection = data.current.wind_dir;
+const precipitation = data.current.precip_mm;
+const pressure = data.current.pressure_mb;
+const cloudCover = data.current.cloud;
+const humidity = data.current.humidity;
+const visibility = data.current.vis_km;
+const uv = data.current.uv;
+
+const uvElement = document.getElementById("uvValue");
+if (uvElement) {
+  uvElement.textContent = uv;
+}
+
+
+const visibilityElement = document.getElementById("visibilityValue");
+if (visibilityElement) {
+  visibilityElement.textContent = `${visibility} km`;
+}
+
+
+const humidityElement = document.getElementById("humidityValue");
+if (humidityElement) {
+  humidityElement.textContent = `${humidity} %`;
+}
+const cloudCoverElement = document.getElementById("cloudCoverValue");
+if (cloudCoverElement) {
+  cloudCoverElement.textContent = `${cloudCover} %`;
+}
+
+const latInput = document.getElementById("latValue");
+const longInput = document.getElementById("longValue");
+
+if (latInput) latInput.value = parseFloat(latitude).toFixed(3);
+if (longInput) longInput.value = parseFloat(longitude).toFixed(3);
+
+
+const pressureElement = document.getElementById("pressureValue");
+if (pressureElement) {
+  pressureElement.textContent = `${pressure} mb`;
+}
+
+const precipElement = document.getElementById("precipValue");
+if (precipElement) {
+  precipElement.textContent = `${precipitation} mm`;
+}
+
+const windSpeedElement = document.getElementById("windSpeedValue");
+if (windSpeedElement) {
+  windSpeedElement.textContent = `${windSpeed} kph`;
+}
+
+const windDirElement = document.getElementById("windDirValue");
+if (windDirElement) {
+  windDirElement.textContent = windDirection;
+}
+
+  const lastUpdatedElement = document.getElementById("lastUpdatedText");
+  if (lastUpdatedElement) lastUpdatedElement.textContent = lastUpdated;
+
+const countryElement = document.getElementById("locationCountry");
+if (countryElement) {
+  countryElement.textContent = country;
+}
+
+          const tempElement = document.getElementById("temperatureText");
+          if (tempElement) tempElement.innerHTML = `${temperature}<span class="sup">0</span>C`;
+
+          const descElement = document.getElementById("weatherDesc");
+          if (descElement) descElement.textContent = conditionText;
+
+          const iconElement = document.getElementById("weatherIcon");
+          if (iconElement) iconElement.src = conditionIcon;
+        })
+        .catch(error => {
+          console.error("Error fetching weather data:", error);
+        });
+    }
+
+    // 📌 4. Gọi ngay và mỗi 10 phút
+    if (savedLocation) {
+      fetchWeatherData(savedLocation);
+      setInterval(() => fetchWeatherData(savedLocation), 600000);
+    }
+  };
+</script>
+
+</body>
+</html>
